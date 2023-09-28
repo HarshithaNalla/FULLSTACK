@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <style>
+      /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background:url('https://images.pexels.com/photos/4100130/pexels-photo-4100130.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    color: #333;
+}
+
+.weather-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <div class="weather-container">
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button id="searchBtn">Search</button>
+        <div id="weatherInfo" class="hidden">
+            <h2>Weather in <span id="cityName"></span></h2>
+            <p>Temperature: <span id="temperature"></span>°C</p>
+            <p>Weather: <span id="weatherDescription"></span></p>
+        </div>
+    </div>
+    <script>// script.js
+      document.addEventListener("DOMContentLoaded", function () {
+          const apiKey = 'cce84bc566550db3f65baa3be408d3a7'; // Replace with your OpenWeather API key
+      
+          document.getElementById("searchBtn").addEventListener("click", function () {
+              const city = document.getElementById("cityInput").value;
+
+                
+      
+              fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+                  .then(response => response.json())
+                  .then(data => {
+                      const weatherInfo = document.getElementById("weatherInfo");
+                      const cityName = document.getElementById("cityName");
+                      const temperature = document.getElementById("temperature");
+                      const weatherDescription = document.getElementById("weatherDescription");
+      
+                      cityName.textContent = data.name;
+                      temperature.textContent = data.main.temp;
+                      weatherDescription.textContent = data.weather[0].description;
+      
+                      weatherInfo.classList.remove("hidden");
+                  })
+                  .catch(error => {
+                      console.error(error);
+                      alert("City not found. Please try again.");
+                  });
+          });
+      });
+      </script>
+</body>
+</html>
